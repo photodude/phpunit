@@ -6,7 +6,6 @@ language: php
 matrix:
   fast_finish: true
   include:
-    - php: 5.3.3
     - php: 5.3
     - php: 5.4
     - php: 5.5
@@ -14,7 +13,7 @@ matrix:
     - php: 7.0
     - php: 7.1
     - nightly
-    - php: hhvm-3.12 # Current LTS version of HHVM
+    - php: hhvm-3.12 # LTS version of HHVM (change when latest is no longer LTS)
       sudo: true # Travis-CI container Infrastructure doesn't support all available HHVM versions, so use Trusty
       dist: trusty
       group: edge # Until the next update
@@ -23,7 +22,7 @@ matrix:
           packages:
             - libxml2-utils
       env: HHVMPHP7="no"
-    - php: hhvm-3.12 # Current LTS version of HHVM with PHP7 mode
+    - php: hhvm-3.12 # LTS version of HHVM with PHP7 mode (change when latest is no longer LTS)
       sudo: true # Travis-CI container Infrastructure doesn't support all available HHVM versions, so use Trusty
       dist: trusty
       group: edge # until the next update
@@ -74,13 +73,6 @@ script:
   - xmllint --noout --schema phpunit.xsd tests/_files/configuration.xml
   - xmllint --noout --schema phpunit.xsd tests/_files/configuration_empty.xml
   - xmllint --noout --schema phpunit.xsd tests/_files/configuration_xinclude.xml -xinclude
-
+  
 notifications:
   email: false
-  webhooks:
-    urls:
-      - https://webhooks.gitter.im/e/6668f52f3dd4e3f81960
-    on_success: always
-    on_failure: always
-    on_start: false
-
