@@ -9,7 +9,8 @@ matrix:
     - php: 5.6
     - php: 7.0
     - php: 7.1
-    - php: hhvm-3.12 # Current LTS version of HHVM
+    - php: nightly
+    - php: hhvm-nightly # Current LTS version of HHVM
       sudo: true # Travis-CI container Infrastructure doesn't support all available HHVM versions, so use Trusty
       dist: trusty
       group: edge # Until the next update
@@ -18,7 +19,7 @@ matrix:
           packages:
             - libxml2-utils
       env: HHVMPHP7="no"
-    - php: hhvm-3.12 # Current LTS version of HHVM with PHP7 mode
+    - php: hhvm-nightly # Current LTS version of HHVM with PHP7 mode
       sudo: true # Travis-CI container Infrastructure doesn't support all available HHVM versions, so use Trusty
       dist: trusty
       group: edge # until the next update
@@ -46,8 +47,9 @@ matrix:
             - libxml2-utils
       env: HHVMPHP7="yes"
   allow_failures:
-    - php: hhvm-3.12
+    - php: hhvm-nightly
     - php: hhvm
+    - php: nightly
 
 before_install:
   - composer self-update
