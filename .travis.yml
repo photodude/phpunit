@@ -67,8 +67,8 @@ before_script:
   - if [[ $TRAVIS_PHP_VERSION = hhv* ]]; then echo 'xdebug.enable = 1' >> /etc/hhvm/php.ini; fi # Extension xdebug is required
 
 script:
-  - ./phpunit --debug --filter 'dependencies3-isolation'
-  - ./phpunit --configuration --debug --filter 'dependencies3-isolation' ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; false; else echo "fail checked"; fi;
+  - ./phpunit --debug --verbose --filter 'dependencies3-isolation'
+  - ./phpunit --configuration --debug --verbose --filter 'dependencies3-isolation' ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; false; else echo "fail checked"; fi;
   - xmllint --noout --schema phpunit.xsd phpunit.xml
   - xmllint --noout --schema phpunit.xsd tests/_files/configuration.xml
   - xmllint --noout --schema phpunit.xsd tests/_files/configuration_empty.xml
