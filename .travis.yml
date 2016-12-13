@@ -1,3 +1,4 @@
+sudo: false
 language: php
 
 php:
@@ -5,13 +6,43 @@ php:
   - 5.4
   - 5.5
   - 5.6
+  - 7.0
+  - 7.1
+  - nightly
 
 env:
   matrix:
     - DEPENDENCIES="high"
     - DEPENDENCIES="low"
 
-sudo: false
+matrix:
+  fast_finish: true
+  include:
+    - php: hhvm # Current version of HHVM (could be LTS or STS)
+      sudo: true
+      dist: trusty
+      group: edge # until the next update
+      addons:
+        apt:
+          packages:
+            - libxml2-utils
+      env:
+        - DEPENDENCIES="high"
+    - php: hhvm # Current version of HHVM (could be LTS or STS)
+      sudo: true
+      dist: trusty
+      group: edge # until the next update
+      addons:
+        apt:
+          packages:
+            - libxml2-utils
+      env:
+        - DEPENDENCIES="low"
+  allow_failures:
+    - php: hhvm
+    - php: 7.0
+    - php: 7.1
+    - php: nightly
 
 before_install:
   - composer self-update
@@ -20,6 +51,12 @@ before_install:
 install:
   - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable --prefer-lowest; fi
+
+before_script:
+  # Extension xdebug is required, enable it on hhvm
+  - if [[ $TRAVIS_PHP_VERSION = hhv* ]]; then echo 'xdebug.enable = 1' >> /etc/hhvm/php.ini; fi
+  # Disable the HHVM JIT for faster Unit Testing
+  - if [[ $TRAVIS_PHP_VERSION = hhv* ]]; then echo 'hhvm.jit = 0' >> /etc/hhvm/php.ini; fi
 
 script:
   - ./phpunit
