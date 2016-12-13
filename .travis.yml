@@ -24,9 +24,17 @@ matrix:
           packages:
             - libxml2-utils
       env:
-        matrix:
-          - DEPENDENCIES="high"
-          - DEPENDENCIES="low"
+        - DEPENDENCIES="high"
+    - php: hhvm # Current version of HHVM (could be LTS or STS)
+      sudo: true
+      dist: trusty
+      group: edge # until the next update
+      addons:
+        apt:
+          packages:
+            - libxml2-utils
+      env:
+        - DEPENDENCIES="low"
   allow_failures:
     - php: hhvm
 
